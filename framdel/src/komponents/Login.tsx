@@ -182,7 +182,7 @@ const Login = ({
           </>
           }
           <button type="submit">Lag bruker</button>
-          <button onClick={() => setLagerBruker(!lagerBruker)}>"Har bruker?</button>
+          <button onClick={() => setLagerBruker(!lagerBruker)}>Har bruker?</button>
         </form>
       )}
     </>

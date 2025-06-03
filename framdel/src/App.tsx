@@ -268,8 +268,14 @@ function App() {
       <Login lagerBruker={lagerBruker} setLagerBruker={setLagerBruker} brukernavn={brukernavn} setBrukernavn={setBrukernavn} passord={passord} setPassord={setPassord} lagBruker={lagBruker} login={login} nyBruker={nyBruker} setNyBruker={setNyBruker} haandterBildeEndring={haandterBildeEndring} bilde={bilde}/>
       :
       <>
-      <button onClick={()=>loggUt()}>Logg ut</button>
+      {aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
+      <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
       <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder}/>
+      </div> : 
+      <div>
+        <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder}/>
+      </div>}
       </>
       }
     </>

@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\uploads\\IMG_0171.JPG"
     },
     {
+      "Id": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\uploads\\IMG_0172.JPG",
+      "PackagePath": "staticwebassets\\uploads\\IMG_0172.JPG"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.bakdel.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

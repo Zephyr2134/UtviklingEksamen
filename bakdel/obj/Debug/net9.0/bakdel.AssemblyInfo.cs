@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("bakdel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f2fcdaf9caf34b0f2e03cd5a09f8fb02563f712")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d6c295666e2ccd448f74b9f1fc90cfb0bc18929")]
 [assembly: System.Reflection.AssemblyProductAttribute("bakdel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("bakdel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
