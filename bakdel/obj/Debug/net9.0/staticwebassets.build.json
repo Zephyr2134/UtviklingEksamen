@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "c92PW5hwMd0niu+7QXgBIaNIMfl4QbQg0an05T38fZA=",
+  "Source": "bakdel",
+  "BasePath": "_content/bakdel",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "bakdel\\wwwroot",
+      "Source": "bakdel",
+      "ContentRoot": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\",
+      "BasePath": "_content/bakdel",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\uploads\\IMG_0171.JPG",
+      "SourceId": "bakdel",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\",
+      "BasePath": "_content/bakdel",
+      "RelativePath": "uploads/IMG_0171#[.{fingerprint}]?.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "yb271m07yg",
+      "Integrity": "cn8h3zzHxPT3ZYngj/9b1sfKPMCeXo5hN5TBuCxdpYU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\IMG_0171.JPG"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "uploads/IMG_0171.JPG",
+      "AssetFile": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\uploads\\IMG_0171.JPG",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2176490"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cn8h3zzHxPT3ZYngj/9b1sfKPMCeXo5hN5TBuCxdpYU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 03 Jun 2025 11:09:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-cn8h3zzHxPT3ZYngj/9b1sfKPMCeXo5hN5TBuCxdpYU="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/IMG_0171.yb271m07yg.JPG",
+      "AssetFile": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\uploads\\IMG_0171.JPG",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2176490"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cn8h3zzHxPT3ZYngj/9b1sfKPMCeXo5hN5TBuCxdpYU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 03 Jun 2025 11:09:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "yb271m07yg"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/IMG_0171.JPG"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-cn8h3zzHxPT3ZYngj/9b1sfKPMCeXo5hN5TBuCxdpYU="
+        }
+      ]
+    }
+  ]
+}

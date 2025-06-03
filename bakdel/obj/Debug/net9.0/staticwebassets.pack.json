@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Nikolai Stanes\\OneDrive - Innlandet fylkeskommune\\Documents\\GithubRepos\\UtviklingEksamen\\bakdel\\wwwroot\\uploads\\IMG_0171.JPG",
+      "PackagePath": "staticwebassets\\uploads\\IMG_0171.JPG"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.bakdel.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.bakdel.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.bakdel.props",
+      "PackagePath": "build\\bakdel.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.bakdel.props",
+      "PackagePath": "buildMultiTargeting\\bakdel.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.bakdel.props",
+      "PackagePath": "buildTransitive\\bakdel.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
