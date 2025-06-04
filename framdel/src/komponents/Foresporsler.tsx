@@ -51,7 +51,7 @@ interface egenskaper {
   redigererForesporsel: number;
   fullforForesporsel: () => void;
   nyForesporsel: Foresporsel;
-  setNyForesporsel: (verdi: Foresporsel) => void;
+  setNyForesporsel: (verdi: any) => void;
   aksepterForesporsel: (id: number) => void;
   hunder: Hund[];
   valgtOmraade: string;
@@ -172,7 +172,7 @@ const Foresporsler = ({
                         <select
                           required
                           onChange={(e) =>
-                            setNyForesporsel((f) => ({
+                            setNyForesporsel((f:any) => ({
                               ...f,
                               passerID: Number(e.target.value),
                             }))
@@ -200,7 +200,7 @@ const Foresporsler = ({
                         <input
                           type="datetime-local"
                           onChange={(e) =>
-                            setNyForesporsel((f) => ({
+                            setNyForesporsel((f:any) => ({
                               ...f,
                               dato: new Date(e.target.value),
                             }))
@@ -263,7 +263,7 @@ const Foresporsler = ({
           <>
             {foresporsler.map(
               (f) =>
-                aktivBruker &&
+                aktivBruker && 'id' in aktivBruker &&
                 f.passerID === aktivBruker.id && (
                   <div key={f.id} className="foresporsler">
                     <h1>

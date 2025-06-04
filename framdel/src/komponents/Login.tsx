@@ -27,7 +27,7 @@ interface egenskaper {
   lagBruker: () => void;
   login: () => void;
   nyBruker: NyBruker;
-  setNyBruker: (verdi: NyBruker) => void;
+  setNyBruker: (verdi: any) => void;
   haandterBildeEndring: (e: React.ChangeEvent<HTMLInputElement>) => void;
   bilde: File | null;
 }
@@ -83,7 +83,7 @@ const Login = ({
           <select
             required
             onChange={(b) =>
-              setNyBruker((gammel) => ({ ...gammel, rolle: b.target.value }))
+              setNyBruker((gammel:any) => ({ ...gammel, rolle: b.target.value }))
             }
           >
             <option value="">Velg rolle</option>
@@ -95,7 +95,7 @@ const Login = ({
             placeholder="Brukernavn"
             value={nyBruker.brukernavn}
             onChange={(b) =>
-              setNyBruker((gammel) => ({
+              setNyBruker((gammel:any) => ({
                 ...gammel,
                 brukernavn: b.target.value,
               }))
@@ -107,7 +107,7 @@ const Login = ({
             placeholder="Passord"
             value={nyBruker.passord}
             onChange={(b) =>
-              setNyBruker((gammel) => ({ ...gammel, passord: b.target.value }))
+              setNyBruker((gammel:any) => ({ ...gammel, passord: b.target.value }))
             }
           />
           <input
@@ -115,7 +115,7 @@ const Login = ({
             placeholder="Telefon nummer"
             value={nyBruker.telefon}
             onChange={(b) =>
-              setNyBruker((gammel) => ({ ...gammel, telefon: b.target.value }))
+              setNyBruker((gammel:any) => ({ ...gammel, telefon: b.target.value }))
             }
           />
           {nyBruker.rolle === "eier" && (
@@ -125,7 +125,7 @@ const Login = ({
                 placeholder="Adresse"
                 value={nyBruker.adresse}
                 onChange={(b) =>
-                  setNyBruker((gammel) => ({
+                  setNyBruker((gammel:any) => ({
                     ...gammel,
                     adresse: b.target.value,
                   }))
@@ -139,7 +139,7 @@ const Login = ({
                   placeholder="Hunde navn"
                   value={nyBruker.hund.navn}
                   onChange={(b) =>
-                    setNyBruker((gammel) => ({
+                    setNyBruker((gammel:any) => ({
                       ...gammel,
                       hund: { ...gammel.hund, navn: b.target.value },
                     }))
@@ -150,7 +150,7 @@ const Login = ({
                   placeholder="Hunde rase"
                   value={nyBruker.hund.rase}
                   onChange={(b) =>
-                    setNyBruker((gammel) => ({
+                    setNyBruker((gammel:any) => ({
                       ...gammel,
                       hund: { ...gammel.hund, rase: b.target.value },
                     }))
@@ -162,7 +162,7 @@ const Login = ({
                   type="number"
                   value={nyBruker.hund.alder}
                   onChange={(b) =>
-                    setNyBruker((gammel) => ({
+                    setNyBruker((gammel:any) => ({
                       ...gammel,
                       hund: { ...gammel.hund, alder: Number(b.target.value) },
                     }))
@@ -173,7 +173,7 @@ const Login = ({
                   value={nyBruker.hund.spesielleBehov}
                   placeholder="Har hunden noen behov?"
                   onChange={(b) =>
-                    setNyBruker((gammel) => ({
+                    setNyBruker((gammel:any) => ({
                       ...gammel,
                       hund: { ...gammel.hund, spesielleBehov: b.target.value },
                     }))
@@ -210,7 +210,7 @@ const Login = ({
                 value={nyBruker.omraade}
                 placeholder="Hvor kan du passe?"
                 onChange={(b) =>
-                  setNyBruker((gammel) => ({
+                  setNyBruker((gammel:any) => ({
                     ...gammel,
                     omraade: b.target.value,
                   }))
@@ -222,7 +222,7 @@ const Login = ({
                 value={nyBruker.pris}
                 type="number"
                 onChange={(b) =>
-                  setNyBruker((gammel) => ({
+                  setNyBruker((gammel:any) => ({
                     ...gammel,
                     pris: Number(b.target.value),
                   }))
