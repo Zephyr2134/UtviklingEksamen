@@ -81,6 +81,8 @@ function App() {
   const [nyForesporsel, setNyForesporsel] = useState<Foresporsel>({id:0,eierID:0,passerID:0,dato:new Date(Date.now()),akseptert:false});
   const [redigererForesporsel, setRedigererForesporsel] = useState(-1);
 
+  const [valgtOmraade, setValgtOmraade] = useState("");
+
   const sendBilde = async () => {
     if (bilde) {
       const data = new FormData();
@@ -165,6 +167,7 @@ function App() {
   const fullforForesporsel = async() =>{
     if(nyForesporsel.passerID !== 0){
       try{
+      console.log(nyForesporsel);
       const svar = await fetch("https://localhost:7130/foresporsel",{
         method:'POST',
         headers:{
@@ -196,6 +199,7 @@ function App() {
       });
       if(svar.ok)
       {
+        setForesporsler(gammel=>gammel.map(f=>f.id===id ? {...f, akseptert:true}:f))
         console.log("Akseptert");
       }else{
         console.log("Noe skjedde");
@@ -270,11 +274,11 @@ function App() {
       <>
       {aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
       <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder}/>
       </div> : 
       <div>
         <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade}/>
       </div>}
       </>
       }

@@ -50,9 +50,11 @@ interface egenskaper
     setNyForesporsel:(verdi:Foresporsel)=>void;
     aksepterForesporsel:(id:number)=>void;
     hunder:Hund[];
+    valgtOmraade:string;
+    setValgtOmraade:(verdi:string)=>void;
 }
 
-const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder}:egenskaper) =>{
+const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade}:egenskaper) =>{
     return (
         <div>
   {aktivBruker && 'hundID' in aktivBruker ? (
@@ -74,6 +76,27 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                       p.id === f.passerID && <h1 key={p.id}>Passer: {p.brukernavn}</h1>
                   )
                 ) : (
+
+                  <select required
+                    onChange={(e) =>setValgtOmraade(e.target.value)}
+                  >
+                    <option value="">Velg sted</option>
+                    {passere.map((p) => (
+                      <option key={p.id} value={p.omraade}>
+                        {p.omraade}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+
+                {redigererForesporsel !== f.id ? (
+                  passere.map(
+                    (p) =>
+                      p.id === f.passerID && <h1 key={p.id}>Passer: {p.brukernavn}</h1>
+                  )
+                ) : (
+
                   <select required
                     onChange={(e) =>
                       setNyForesporsel((f) => ({
@@ -83,7 +106,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                     }
                   >
                     <option value="0">Velg passer</option>
-                    {passere.map((p) => (
+                    {passere.map((p) => p.omraade === valgtOmraade && (
                       <option key={p.id} value={p.id}>
                         {p.brukernavn}
                       </option>
@@ -92,10 +115,10 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                 )}
 
                 {redigererForesporsel !== f.id ? (
-                  <h1>{new Date(f.dato).toDateString()}</h1>
+                  <h1>{new Date(f.dato).toLocaleString()}</h1>
                 ) : (
                   <input
-                    type="date"
+                    type="datetime-local"
                     onChange={(e) =>
                       setNyForesporsel((f) => ({
                         ...f,
@@ -139,6 +162,8 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                 ))}
 
               <h1>Dato: {new Date(f.dato).toDateString()}</h1>
+
+              <h1>Status: {f.akseptert ? "Akseptert" : "Ikke akseptert"}</h1>
 
               <button onClick={() => aksepterForesporsel(f.id)}>Aksepter</button>
             </div>

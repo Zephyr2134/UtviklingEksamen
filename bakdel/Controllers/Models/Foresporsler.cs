@@ -7,4 +7,9 @@ public class Foresporsler
     public int passerID { get; set; }
     public required DateTime dato { get; set; }
     public bool akseptert { get; set; }
+
+    public required string rapport { get; set; }
+    public int vurdering { get; set; }
+    public required string kommentar { get; set; } 
+    
 }
