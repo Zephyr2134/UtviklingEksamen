@@ -412,7 +412,7 @@ function App() {
       });
       if(svar.ok)
       {
-        setHundeEiere(gammel=>gammel.map(e=>e.id===id ? {...e, aktiv:true}:e))
+        setHundePassere(gammel=>gammel.map(e=>e.id===id ? {...e, aktiv:true}:e))
         console.log("Aktivert passer");
       }else{
         console.log("Noe skjedde");

@@ -58,7 +58,8 @@ interface egenskaper
 
 const Admin = ({eiere, passere, hunder, foresporsler, deaktiverEier, deaktiverPasser, aktiverEier, aktiverPasser}:egenskaper) =>{
     return (
-
+<>
+        <h1>Admin side</h1>
     <div className= "AdminSide">
         <div className="Hunder">
             <h1>Hunder</h1>
@@ -77,6 +78,7 @@ const Admin = ({eiere, passere, hunder, foresporsler, deaktiverEier, deaktiverPa
             {eiere.map(e=>
                 <div className="HundeEier">
                     <h1>ID. {e.id}</h1>
+                    <h1>Eier er: {e.aktiv ? 'Aktiv':'Deaktivert'}</h1>
                     <button onClick={()=>(e.aktiv ? deaktiverEier(e.id):aktiverEier(e.id))}>{e.aktiv ? 'Deaktiver eier':'Aktiver eier'}</button>
                     <h1>Brukernavn: {e.brukernavn}</h1>
                     <h1>Hunde id: {e.hundID}</h1>
@@ -92,6 +94,7 @@ const Admin = ({eiere, passere, hunder, foresporsler, deaktiverEier, deaktiverPa
             {passere.map(p=>
                 <div className="HundePasser">
                     <h1>ID. {p.id}</h1>
+                    <h1>Passer er: {p.aktiv ? 'Aktiv':'Deaktivert'}</h1>
                     <button onClick={()=>(p.aktiv ? deaktiverPasser(p.id):aktiverPasser(p.id))}>{p.aktiv ? 'Deaktiver passer':'Aktiver passer'}</button>
                     <h1>Brukernavn: {p.brukernavn}</h1>
                     <h1>Passord: {p.passord}</h1>
@@ -119,7 +122,7 @@ const Admin = ({eiere, passere, hunder, foresporsler, deaktiverEier, deaktiverPa
             )}
         </div>
     </div>
-
+</>
 );
 }
 
