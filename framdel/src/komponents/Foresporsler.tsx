@@ -58,9 +58,20 @@ interface egenskaper
     valgtOmraade:string;
     setValgtOmraade:(verdi:string)=>void;
     bekreftForesporselFerdig:(verdi:number)=>void;
+    rapport:string;
+    setRapport:(verdi:string)=>void;
+    fullforRapport:(id:number)=>void;
+    rapporterer:number;
+    setRapporterer:(id:number)=>void;
+    kommenterer:number;
+    setKommenterer:(verdi:number)=>void;
+    fullforKommentar:(id:number)=>void;
+    setVurdering:(verdi:number)=>void;
+    setKommentar:(verdi:string)=>void;
+    foresporselBetalt:(id:number)=>void;
 }
 
-const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig}:egenskaper) =>{
+const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig, rapport, setRapport, fullforRapport, rapporterer, setRapporterer, kommenterer, setKommenterer, fullforKommentar, setVurdering, setKommentar, foresporselBetalt}:egenskaper) =>{
     return (
         <div>
   {aktivBruker && 'hundID' in aktivBruker ? (
@@ -72,6 +83,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
           (f) =>
             f.eierID === aktivBruker.id && (
               <div key={f.id} className="Foresporsel">
+                {f.betalt ? <h2>Betaling mottat</h2> : <h2>Ikke betalt</h2>}
                 {redigererForesporsel !== f.id ? (
                   <h1>Status: {f.akseptert ? (f.fullfort ? 'Fullført':'Akseptert') : 'Ikke akseptert'}</h1>
                 ) : null}
@@ -99,7 +111,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                 {redigererForesporsel !== f.id ? (
                   passere.map(
                     (p) =>
-                      p.id === f.passerID && <h1 key={p.id}>Passer: {p.brukernavn}</h1>
+                      p.id === f.passerID && <h1 key={p.id}>Område: {p.omraade}</h1>
                   )
                 ) : (
 
@@ -120,6 +132,10 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                   </select>
                 )}
 
+                {f.fullfort && <p>{f.rapport}</p>}
+
+                
+
                 {redigererForesporsel !== f.id ? (
                   <h1>{new Date(f.dato).toLocaleString()}</h1>
                 ) : (
@@ -134,11 +150,18 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                   />
                 )}
 
+
                 {redigererForesporsel === f.id && (
                   <button onClick={() => fullforForesporsel()}>
                     Fullfør forespørsel
                   </button>
                 )}
+
+                {f.fullfort && (kommenterer===f.id ? <div><input placeholder="Skriv en kommentar" onChange={(e)=>setKommentar(e.target.value)}/> <select onChange={(e)=>setVurdering(Number(e.target.value))}><option value="">Gi en vurdering</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><button onClick={()=>{fullforKommentar(f.id)}}>Fullfør tilbakemelding</button></div> : <div><button onClick={()=>setKommenterer(f.id)}>Skriv kommentar</button> <p>{f.kommentar}</p> <div>
+      {Array.from({ length: f.vurdering }, (_, i) => (
+        <span key={i}>⭐</span>
+      ))}
+    </div></div>)}
               </div>
             )
         )}
@@ -172,9 +195,17 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
               <h1>Status: {f.akseptert ? (f.fullfort ? "Fullført":"Akseptert") : "Ikke akseptert"}</h1>
 
               {f.fullfort && <p>{f.rapport}</p>}
+              {f.fullfort && <h3>Tilbakemelding</h3>}
+              {f.fullfort && <p>{f.kommentar}</p>}
+              <div>
+      {Array.from({ length: f.vurdering }, (_, i) => (
+        <span key={i}>⭐</span>
+      ))}
+    </div>
 
               {!f.akseptert && <button onClick={() => aksepterForesporsel(f.id)}>Aksepter</button>}
-              {f.akseptert && !f.fullfort && <button onClick={() => bekreftForesporselFerdig(f.id)}>Fullført</button>}
+              {f.akseptert && !f.fullfort ? <button onClick={() => {rapporterer === 0 && bekreftForesporselFerdig(f.id); setRapporterer(f.id)}}>Fullført</button> : (rapporterer === f.id && <div><input placeholder="Skriv rapport" value={rapport} onChange={(e)=>setRapport(e.target.value)}/> <button onClick={()=>fullforRapport(f.id)}>Fullfør rapport</button></div>)}
+              {f.kommentar !== "" && !f.betalt && <button onClick={()=>foresporselBetalt(f.id)}>Betaling mottat</button>}
             </div>
           )
       )}

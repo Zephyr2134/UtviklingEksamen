@@ -86,8 +86,14 @@ function App() {
   const [nyForesporsel, setNyForesporsel] = useState<Foresporsel>({id:0,eierID:0,passerID:0,dato:new Date(Date.now()),akseptert:false, rapport:"", vurdering:0, kommentar:"",fullfort:false,betalt:false});
   const [redigererForesporsel, setRedigererForesporsel] = useState(-1);
 
+  const [valgtPris, setValgtPris] = useState(0);
   const [valgtOmraade, setValgtOmraade] = useState("");
-  const [skriverRapport, setSkriverRapport] = useState(0);
+  const [rapport, setRapport] = useState("");
+  const [rapporterer, setRapporterer] = useState(0);
+
+  const [kommentar, setKommentar] = useState("");
+  const [vurdering, setVurdering] = useState(0);
+  const [kommenterer, setKommenterer] = useState(0);
 
   const sendBilde = async () => {
     if (bilde) {
@@ -236,6 +242,73 @@ function App() {
     {console.log(e);}
   }
 
+  const foresporselBetalt = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/foresporselBetalt/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setForesporsler(gammel=>gammel.map(f=>f.id===id ? {...f, betalt:true}:f))
+        console.log("Betalt");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
+  const fullforRapport = async(id:number) =>{
+    try{
+      const svar = await fetch(`https://localhost:7130/rapportForesporsel/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({rapport:rapport}),
+      });
+      if(svar.ok)
+      {
+        setForesporsler(gammel=>gammel.map(f=>f.id===id ? {...f, rapport:rapport}:f))
+        setRapporterer(0);
+        console.log("Fullfort");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
+  const fullforKommentar = async(id:number) =>{
+    try{
+      const svar = await fetch(`https://localhost:7130/kommenterForesporsel/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({kommentar:kommentar, vurdering:vurdering}),
+      });
+      if(svar.ok)
+      {
+        setForesporsler(gammel=>gammel.map(f=>f.id===id ? {...f, kommentar:kommentar, vurdering:vurdering}:f))
+        setKommentar("");
+        setKommenterer(0);
+        setVurdering(0);
+        console.log("Kommentert");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
   const loggUt = async() =>
   {
     setLoggetPaa(false);
@@ -301,11 +374,11 @@ function App() {
       <>
       {aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
       <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder} bekreftForesporselFerdig={bekreftForesporselFerdig}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt}/>
       </div> : 
       <div>
         <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} bekreftForesporselFerdig={bekreftForesporselFerdig}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt}/>
       </div>}
       </>
       }

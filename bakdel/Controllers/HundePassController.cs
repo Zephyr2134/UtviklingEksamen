@@ -138,7 +138,7 @@ public class HundePassController : ControllerBase
         }
         return BadRequest();
     }
-    
+
     [HttpPut("/fullforForesporsel/{id}")]
     public async Task<ActionResult> fullfor(int id)
     {
@@ -146,6 +146,47 @@ public class HundePassController : ControllerBase
         if (foresporsel != null)
         {
             foresporsel.fullfort = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/rapportForesporsel/{id}")]
+    public async Task<ActionResult> rapporter(int id, [FromBody] Rapport rapport)
+    {
+        var foresporsel = await _context.Foresporsler.FirstOrDefaultAsync(f => f.Id == id);
+        if (foresporsel != null)
+        {
+            foresporsel.rapport = rapport.rapport;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+
+    [HttpPut("/kommenterForesporsel/{id}")]
+    public async Task<ActionResult> kommenter(int id, [FromBody] Tilebakemelding kommentar)
+    {
+        var foresporsel = await _context.Foresporsler.FirstOrDefaultAsync(f => f.Id == id);
+        if (foresporsel != null)
+        {
+            foresporsel.kommentar = kommentar.kommentar;
+            foresporsel.vurdering = kommentar.vurdering;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/foresporselBetalt/{id}")]
+    public async Task<ActionResult> betalt(int id)
+    {
+        var foresporsel = await _context.Foresporsler.FirstOrDefaultAsync(f => f.Id == id);
+        if (foresporsel != null)
+        {
+            foresporsel.betalt = true;
             await _context.SaveChangesAsync();
 
             return Ok();
