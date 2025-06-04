@@ -4,6 +4,10 @@ import Foresporsler from './komponents/Foresporsler';
 import Admin from './komponents/Admin';
 import './style.css'
 
+//Brukernavn: admin
+//Passord: passord
+//Så ser du resten etter det.
+
 interface Foresporsel
 {
   id:number;
