@@ -81,7 +81,7 @@ function App() {
   const [nyBruker, setNyBruker] = useState<NyBruker>({rolle:"",brukernavn:"", passord:"",telefon:"",adresse:"",hund:{id:0,navn:"",rase:"",alder:0,spesielleBehov:""},hundBildePlassering:"",omraade:"",pris:0});
   const [bilde, setBilde] = useState<File | null>(null);
 
-  const [side, setSide] = useState(0);
+  const side = 0;
   const [hundeEiere, setHundeEiere] = useState<HundeEier[]>([]);
   const [hundePassere, setHundePassere] = useState<HundePasser[]>([]);
   const [hunder, setHunder] = useState<Hund[]>([]);

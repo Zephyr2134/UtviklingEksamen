@@ -78,7 +78,7 @@ interface egenskaper
     setValgtPris:(verdi:number)=>void;
 }
 
-const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig, rapport, setRapport, fullforRapport, rapporterer, setRapporterer, kommenterer, setKommenterer, fullforKommentar, setVurdering, setKommentar, foresporselBetalt, valgtPris, setValgtPris}:egenskaper) =>{
+const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, setNyForesporsel, aksepterForesporsel, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig, rapport, setRapport, fullforRapport, rapporterer, setRapporterer, kommenterer, setKommenterer, fullforKommentar, setVurdering, setKommentar, foresporselBetalt, valgtPris, setValgtPris}:egenskaper) =>{
     return (
     <>
         <div>
