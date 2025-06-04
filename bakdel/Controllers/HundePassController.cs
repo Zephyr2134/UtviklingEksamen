@@ -118,7 +118,7 @@ public class HundePassController : ControllerBase
     [HttpPost("/foresporsel")]
     public async Task<ActionResult<IEnumerable<Foresporsler>>> lagForesporsel([FromBody] Foresporsler foresporsel)
     {
-        var nyForesporsel = new Foresporsler { eierID = foresporsel.eierID, passerID = foresporsel.passerID, dato = foresporsel.dato, akseptert = foresporsel.akseptert };
+        var nyForesporsel = new Foresporsler { eierID = foresporsel.eierID, passerID = foresporsel.passerID, dato = foresporsel.dato, akseptert = foresporsel.akseptert, rapport = "", kommentar = "", vurdering = 0, betalt = false, fullfort = false };
         _context.Foresporsler.Add(nyForesporsel);
         await _context.SaveChangesAsync();
         var foresporsler = await _context.Foresporsler.ToListAsync();
@@ -132,6 +132,20 @@ public class HundePassController : ControllerBase
         if (foresporsel != null)
         {
             foresporsel.akseptert = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    
+    [HttpPut("/fullforForesporsel/{id}")]
+    public async Task<ActionResult> fullfor(int id)
+    {
+        var foresporsel = await _context.Foresporsler.FirstOrDefaultAsync(f => f.Id == id);
+        if (foresporsel != null)
+        {
+            foresporsel.fullfort = true;
             await _context.SaveChangesAsync();
 
             return Ok();

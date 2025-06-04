@@ -10,6 +10,11 @@ interface Foresporsel
   passerID:number;
   dato:Date;
   akseptert:boolean;
+  rapport:string;
+  vurdering:number;
+  kommentar:string;
+  fullfort:boolean;
+  betalt:boolean;
 }
 
 interface Hund
@@ -78,10 +83,11 @@ function App() {
   const [hunder, setHunder] = useState<Hund[]>([]);
   const [foresporsler, setForesporsler] = useState<Foresporsel[]>([]);
 
-  const [nyForesporsel, setNyForesporsel] = useState<Foresporsel>({id:0,eierID:0,passerID:0,dato:new Date(Date.now()),akseptert:false});
+  const [nyForesporsel, setNyForesporsel] = useState<Foresporsel>({id:0,eierID:0,passerID:0,dato:new Date(Date.now()),akseptert:false, rapport:"", vurdering:0, kommentar:"",fullfort:false,betalt:false});
   const [redigererForesporsel, setRedigererForesporsel] = useState(-1);
 
   const [valgtOmraade, setValgtOmraade] = useState("");
+  const [skriverRapport, setSkriverRapport] = useState(0);
 
   const sendBilde = async () => {
     if (bilde) {
@@ -209,6 +215,27 @@ function App() {
     {console.log(e);}
   }
 
+  const bekreftForesporselFerdig = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/fullforForesporsel/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setForesporsler(gammel=>gammel.map(f=>f.id===id ? {...f, fullfort:true}:f))
+        console.log("Fullfort");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
   const loggUt = async() =>
   {
     setLoggetPaa(false);
@@ -274,11 +301,11 @@ function App() {
       <>
       {aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
       <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder} bekreftForesporselFerdig={bekreftForesporselFerdig}/>
       </div> : 
       <div>
         <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} bekreftForesporselFerdig={bekreftForesporselFerdig}/>
       </div>}
       </>
       }

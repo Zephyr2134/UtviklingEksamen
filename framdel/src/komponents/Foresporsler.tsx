@@ -5,6 +5,11 @@ interface Foresporsel
   passerID:number;
   dato:Date;
   akseptert:boolean;
+  rapport:string;
+  vurdering:number;
+  kommentar:string;
+  fullfort:boolean;
+  betalt:boolean;
 }
 
 interface Hund
@@ -52,9 +57,10 @@ interface egenskaper
     hunder:Hund[];
     valgtOmraade:string;
     setValgtOmraade:(verdi:string)=>void;
+    bekreftForesporselFerdig:(verdi:number)=>void;
 }
 
-const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade}:egenskaper) =>{
+const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig}:egenskaper) =>{
     return (
         <div>
   {aktivBruker && 'hundID' in aktivBruker ? (
@@ -67,7 +73,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
             f.eierID === aktivBruker.id && (
               <div key={f.id} className="Foresporsel">
                 {redigererForesporsel !== f.id ? (
-                  <h1>Status: {f.akseptert ? 'Akseptert' : 'Ikke akseptert'}</h1>
+                  <h1>Status: {f.akseptert ? (f.fullfort ? 'Fullført':'Akseptert') : 'Ikke akseptert'}</h1>
                 ) : null}
 
                 {redigererForesporsel !== f.id ? (
@@ -163,9 +169,12 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
 
               <h1>Dato: {new Date(f.dato).toDateString()}</h1>
 
-              <h1>Status: {f.akseptert ? "Akseptert" : "Ikke akseptert"}</h1>
+              <h1>Status: {f.akseptert ? (f.fullfort ? "Fullført":"Akseptert") : "Ikke akseptert"}</h1>
 
-              <button onClick={() => aksepterForesporsel(f.id)}>Aksepter</button>
+              {f.fullfort && <p>{f.rapport}</p>}
+
+              {!f.akseptert && <button onClick={() => aksepterForesporsel(f.id)}>Aksepter</button>}
+              {f.akseptert && !f.fullfort && <button onClick={() => bekreftForesporselFerdig(f.id)}>Fullført</button>}
             </div>
           )
       )}

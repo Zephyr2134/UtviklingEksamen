@@ -10,6 +10,8 @@ public class Foresporsler
 
     public required string rapport { get; set; }
     public int vurdering { get; set; }
-    public required string kommentar { get; set; } 
+    public required string kommentar { get; set; }
+    public bool fullfort { get; set; }
+    public bool betalt { get; set; } 
     
 }
