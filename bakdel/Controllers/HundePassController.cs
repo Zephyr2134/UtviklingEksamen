@@ -20,15 +20,24 @@ public class HundePassController : ControllerBase
     [HttpPost("/login")]
     public async Task<ActionResult> login([FromBody] LoginBruker bruker)
     {
+        if (bruker.brukernavn == "admin" && bruker.passord == "passord")
+        {
+            var admin = new Admin { brukernavn = bruker.brukernavn, passord = bruker.passord, rolle = "admin" };
+            return Ok(admin);
+        }
+        else if (bruker.brukernavn == "admin")
+        {
+            return BadRequest();
+        }
         var eier = await _context.hundeEiere.FirstOrDefaultAsync(e => e.brukernavn == bruker.brukernavn && e.passord == bruker.passord);
-        if (eier != null)
+        if (eier != null && eier.aktiv)
         {
             return Ok(eier);
         }
         else
         {
             var passer = await _context.hundePassere.FirstOrDefaultAsync(p => p.brukernavn == bruker.brukernavn && p.passord == bruker.passord);
-            if (passer != null)
+            if (passer != null && passer.aktiv)
             {
                 return Ok(passer);
             }
@@ -41,6 +50,10 @@ public class HundePassController : ControllerBase
     [HttpPost("/lagBruker")]
     public async Task<ActionResult> lagBruker([FromBody] nyBruker ny)
     {
+        if (ny.brukernavn == "admin" || ny.passord == "passord")
+        {
+            return BadRequest();
+        }
         var eier = await _context.hundeEiere.FirstOrDefaultAsync(e => e.brukernavn == ny.brukernavn);
         var passer = await _context.hundePassere.FirstOrDefaultAsync(p => p.brukernavn == ny.brukernavn);
         if (eier == null && passer == null)
@@ -51,7 +64,7 @@ public class HundePassController : ControllerBase
                 _context.hunder.Add(nyHund);
                 await _context.SaveChangesAsync();
                 var hund = await _context.hunder.FirstOrDefaultAsync(h => h.navn == nyHund.navn && h.alder == nyHund.alder && h.rase == nyHund.rase && h.spesielleBehov == nyHund.spesielleBehov);
-                var nyEier = new HundeEier { brukernavn = ny.brukernavn, passord = ny.passord, adresse = ny.adresse, telefon = ny.telefon, hundID = hund.Id, hundBildePlassering = ny.hundBildePlassering };
+                var nyEier = new HundeEier { brukernavn = ny.brukernavn, passord = ny.passord, adresse = ny.adresse, telefon = ny.telefon, hundID = hund.Id, hundBildePlassering = ny.hundBildePlassering, aktiv = true };
                 _context.hundeEiere.Add(nyEier);
                 await _context.SaveChangesAsync();
 
@@ -59,7 +72,7 @@ public class HundePassController : ControllerBase
             }
             else if (ny.rolle == "passer")
             {
-                var nyPasser = new HundePasser { brukernavn = ny.brukernavn, passord = ny.passord, omraade = ny.omraade, pris = ny.pris, telefon = ny.telefon };
+                var nyPasser = new HundePasser { brukernavn = ny.brukernavn, passord = ny.passord, omraade = ny.omraade, pris = ny.pris, telefon = ny.telefon, aktiv = true };
                 _context.hundePassere.Add(nyPasser);
                 await _context.SaveChangesAsync();
                 return Ok();
@@ -187,6 +200,58 @@ public class HundePassController : ControllerBase
         if (foresporsel != null)
         {
             foresporsel.betalt = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/deaktiverEier/{id}")]
+    public async Task<ActionResult> deaktiverEier(int id)
+    {
+        var eier = await _context.hundeEiere.FirstOrDefaultAsync(e => e.Id == id);
+        if (eier != null)
+        {
+            eier.aktiv = false;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/deaktiverPasser/{id}")]
+    public async Task<ActionResult> deaktiverPasser(int id)
+    {
+        var passer = await _context.hundePassere.FirstOrDefaultAsync(e => e.Id == id);
+        if (passer != null)
+        {
+            passer.aktiv = false;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/aktiverEier/{id}")]
+    public async Task<ActionResult> aktiverEier(int id)
+    {
+        var eier = await _context.hundeEiere.FirstOrDefaultAsync(e => e.Id == id);
+        if (eier != null)
+        {
+            eier.aktiv = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return BadRequest();
+    }
+    [HttpPut("/aktiverPasser/{id}")]
+    public async Task<ActionResult> aktiverPasser(int id)
+    {
+        var passer = await _context.hundePassere.FirstOrDefaultAsync(e => e.Id == id);
+        if (passer != null)
+        {
+            passer.aktiv = true;
             await _context.SaveChangesAsync();
 
             return Ok();

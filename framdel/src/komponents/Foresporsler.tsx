@@ -30,7 +30,12 @@ interface HundePasser
   omraade:string;
   pris:number;
 }
-
+interface Admin
+{
+  brukernavn:string;
+  passord:string;
+  rolle:string;
+}
 interface HundeEier
 {
   id:number;
@@ -44,7 +49,7 @@ interface HundeEier
 
 interface egenskaper
 {
-    aktivBruker:HundeEier|HundePasser|null;
+    aktivBruker:HundeEier|HundePasser|Admin|null;
     foresporsler:Foresporsel[];
     eiere:HundeEier[];
     passere:HundePasser[];
@@ -69,10 +74,13 @@ interface egenskaper
     setVurdering:(verdi:number)=>void;
     setKommentar:(verdi:string)=>void;
     foresporselBetalt:(id:number)=>void;
+    valgtPris:number;
+    setValgtPris:(verdi:number)=>void;
 }
 
-const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig, rapport, setRapport, fullforRapport, rapporterer, setRapporterer, kommenterer, setKommenterer, fullforKommentar, setVurdering, setKommentar, foresporselBetalt}:egenskaper) =>{
+const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel, redigererForesporsel, fullforForesporsel, nyForesporsel, setNyForesporsel, aksepterForesporsel, hunder, valgtOmraade, setValgtOmraade, bekreftForesporselFerdig, rapport, setRapport, fullforRapport, rapporterer, setRapporterer, kommenterer, setKommenterer, fullforKommentar, setVurdering, setKommentar, foresporselBetalt, valgtPris, setValgtPris}:egenskaper) =>{
     return (
+    <>
         <div>
   {aktivBruker && 'hundID' in aktivBruker ? (
     <>
@@ -107,6 +115,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                   </select>
                 )}
 
+                {redigererForesporsel === f.id && <input type="number" onChange={(e)=>setValgtPris(Number(e.target.value))} placeholder="Ønsket pris" />}
 
                 {redigererForesporsel !== f.id ? (
                   passere.map(
@@ -124,7 +133,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
                     }
                   >
                     <option value="0">Velg passer</option>
-                    {passere.map((p) => p.omraade === valgtOmraade && (
+                    {passere.map((p) => p.omraade === valgtOmraade && p.pris <= valgtPris && valgtPris && (
                       <option key={p.id} value={p.id}>
                         {p.brukernavn}
                       </option>
@@ -212,6 +221,7 @@ const Foresporsler = ({aktivBruker, foresporsler, eiere, passere, lagForesporsel
     </>
   )}
 </div>
+</>
     )
 }
 

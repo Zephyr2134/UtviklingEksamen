@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Login from './komponents/Login';
 import Foresporsler from './komponents/Foresporsler';
+import Admin from './komponents/Admin';
 import './style.css'
 
 interface Foresporsel
@@ -31,6 +32,7 @@ interface HundePasser
   id:number;
   brukernavn:string;
   passord:string;
+  aktiv:boolean;
   telefon:string;
   omraade:string;
   pris:number;
@@ -41,10 +43,18 @@ interface HundeEier
   id:number;
   brukernavn:string;
   passord:string;
+  aktiv:boolean;
   telefon:string;
   adresse:string;
   hundID:number;
   hundBildePlassering:string;
+}
+
+interface Admin
+{
+  brukernavn:string;
+  passord:string;
+  rolle:string;
 }
 
 interface NyBruker
@@ -60,12 +70,6 @@ interface NyBruker
   pris:number;
 }
 
-interface loginBruker
-{
-  brukernavn:string;
-  passord:string;
-}
-
 function App() {
 
   const [loggetPaa, setLoggetPaa] = useState(false);
@@ -73,7 +77,7 @@ function App() {
   const [passord, setPassord] = useState("");
 
   const [lagerBruker, setLagerBruker] = useState(false);
-  const [aktivBruker, setAktivBruker] = useState<HundeEier | HundePasser | null>(null);
+  const [aktivBruker, setAktivBruker] = useState<HundeEier | HundePasser | Admin | null>(null);
   const [nyBruker, setNyBruker] = useState<NyBruker>({rolle:"",brukernavn:"", passord:"",telefon:"",adresse:"",hund:{id:0,navn:"",rase:"",alder:0,spesielleBehov:""},hundBildePlassering:"",omraade:"",pris:0});
   const [bilde, setBilde] = useState<File | null>(null);
 
@@ -336,6 +340,88 @@ function App() {
       }
   }
 
+  const deaktiverEier = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/deaktiverEier/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setHundeEiere(gammel=>gammel.map(e=>e.id===id ? {...e, aktiv:false}:e))
+        console.log("Deaktivert eier");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
+  const deaktiverPasser = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/deaktiverPasser/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setHundePassere(gammel=>gammel.map(p=>p.id===id ? {...p, aktiv:false}:p));
+        console.log("Deaktivert eier");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+  const aktiverEier = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/aktiverEier/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setHundeEiere(gammel=>gammel.map(e=>e.id===id ? {...e, aktiv:true}:e))
+        console.log("Aktivert eier");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+  const aktiverPasser = async(id:number) => {
+    try{
+      const svar = await fetch(`https://localhost:7130/aktiverPasser/${id}`, {
+        method:"PUT",
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify({}),
+      });
+      if(svar.ok)
+      {
+        setHundeEiere(gammel=>gammel.map(e=>e.id===id ? {...e, aktiv:true}:e))
+        console.log("Aktivert passer");
+      }else{
+        console.log("Noe skjedde");
+      }
+    }
+    catch(e)
+    {console.log(e);}
+  }
+
   useEffect(()=>{
     const hentAlt = async() =>{
       try{
@@ -372,14 +458,22 @@ function App() {
       <Login lagerBruker={lagerBruker} setLagerBruker={setLagerBruker} brukernavn={brukernavn} setBrukernavn={setBrukernavn} passord={passord} setPassord={setPassord} lagBruker={lagBruker} login={login} nyBruker={nyBruker} setNyBruker={setNyBruker} haandterBildeEndring={haandterBildeEndring} bilde={bilde}/>
       :
       <>
-      {aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
+      
+      {aktivBruker && aktivBruker.brukernavn === "admin" ? 
+      <div>
+        <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
+        <Admin eiere={hundeEiere} passere={hundePassere} hunder={hunder} foresporsler={foresporsler} aktiverEier={aktiverEier} aktiverPasser={aktiverPasser} deaktiverEier={deaktiverEier} deaktiverPasser={deaktiverPasser}/>
+        </div>
+        :
+
+      ( aktivBruker && 'hundID' in aktivBruker ? <div className="EierSide" style={{ backgroundImage: `url(${aktivBruker.hundBildePlassering})` }}> 
       <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt}/>
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} hunder={hunder} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt} valgtPris={valgtPris} setValgtPris={setValgtPris}/>
       </div> : 
       <div>
         <button className="Hundeknapp loggUt" onClick={() => loggUt()}>🐾 Logg ut</button>
-      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt}/>
-      </div>}
+      <Foresporsler aktivBruker={aktivBruker} foresporsler={foresporsler} eiere={hundeEiere} passere={hundePassere} lagForesporsel={lagForesporsel} redigererForesporsel={redigererForesporsel} fullforForesporsel={fullforForesporsel} nyForesporsel={nyForesporsel} setNyForesporsel={setNyForesporsel} aksepterForesporsel={aksepterForesporsel} hunder={hunder} valgtOmraade={valgtOmraade} setValgtOmraade={setValgtOmraade} bekreftForesporselFerdig={bekreftForesporselFerdig} rapport={rapport} setRapport={setRapport} fullforRapport={fullforRapport} rapporterer={rapporterer} setRapporterer={setRapporterer} kommenterer={kommenterer} setKommenterer={setKommenterer} fullforKommentar={fullforKommentar} setVurdering={setVurdering} setKommentar={setKommentar} foresporselBetalt={foresporselBetalt} valgtPris={valgtPris} setValgtPris={setValgtPris}/>
+      </div>)}
       </>
       }
     </>
